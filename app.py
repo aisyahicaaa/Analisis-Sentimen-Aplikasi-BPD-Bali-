@@ -21,28 +21,19 @@ st.markdown("""
     background-color: #0B6B3A;
 }
 
-/* Mengatur container utama agar aman */
+/* Mengatur container utama */
 .block-container {
     max-width: 680px;
-    padding-top: 20px; 
+    padding-top: 0px !important; /* Kita nolkan bawaan Streamlit */
     padding-bottom: 40px;
 }
 
-/* CSS Khusus Kontainer Logo Baru (Menurunkan logo tanpa menjauhkan tulisan) */
-.logo-container {
+/* Memastikan gambar/logo di dalam kolom otomatis centering */
+[data-testid="stImage"] {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    padding-top: 40px;    /* Ini yang mendorong LOGO TURUN agar tidak kepotong */
-    margin-bottom: 5px;   /* Ini yang menjaga LOGO TETAP DEKAT dengan tulisan h1 */
-}
-
-.logo-container img {
-    width: 100%;
-    max-width: 140px;     /* Ukuran mini proporsional */
-    height: auto;
-    object-fit: contain;
+    margin: 0 auto;
 }
 
 /* Merapikan Text Area bawaan */
@@ -94,32 +85,32 @@ except FileNotFoundError:
     st.error("Model (.pkl) tidak ditemukan, pastikan file berada di folder yang sama.")
 
 # ======================================
-# HEADER & LOGO (PERBAIKAN PERMANEN)
+# HEADER & LOGO (SOLUSI AMAN & RAPAT)
 # ======================================
 
-# Kita tidak pakai st.columns/st.image bawaan untuk logo agar tidak di-override Streamlit.
-# Kita panggil langsung via HTML bertingkat yang sudah dikunci oleh CSS di atas.
-st.markdown("""
-<div class="logo-container">
-    <img src="app/static/logo-bank-bpd-bali.png" alt="Logo BPD Bali">
-</div>
-""", unsafe_allow_html=True)
+# Trik: Membuat container kosong dengan tinggi 50px untuk menurunkan logo agar tidak kepotong browser
+st.container(height=50, border=False)
 
-# Teks Judul Utama (Ukurannya diperkecil ke 38px & margin nempel)
+# Menggunakan kolom asli Streamlit agar logo 100% muncul dan ukurannya mini/pas
+kiri, tengah, kanan = st.columns([1.6, 1, 1.6]) 
+with tengah:
+    st.image("logo-bank-bpd-bali.png", use_container_width=True)
+
+# Teks Judul Utama (Rapat menempel di bawah logo)
 st.markdown("""
 <h1 style="
     text-align: center;
     color: white;
     font-size: 38px;
     font-weight: bold;
-    margin-top: 0px; 
+    margin-top: 5px; 
     margin-bottom: 0px;
     letter-spacing: -0.5px;">
     Analisis Sentimen
 </h1>
 """, unsafe_allow_html=True)
 
-# Teks Sub-judul (Diperkecil ke 18px & jarak bawah disesuaikan)
+# Teks Sub-judul
 st.markdown("""
 <p style="
     text-align: center;
