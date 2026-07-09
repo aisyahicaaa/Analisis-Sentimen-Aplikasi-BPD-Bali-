@@ -12,7 +12,7 @@ st.set_page_config(
 )
 
 # ======================================
-# REFINEMENT CSS (FULLY RESPONSIVE & PADAT)
+# REFINEMENT CSS (AMAN & RESPONSIF)
 # ======================================
 st.markdown("""
 <style>
@@ -21,7 +21,7 @@ st.markdown("""
     background-color: #0B6B3A;
 }
 
-/* Mengatur container utama agar fleksibel di layar HP dan Laptop */
+/* Mengatur container utama agar fleksibel */
 .block-container {
     max-width: 680px;
     width: 100%;
@@ -31,19 +31,9 @@ st.markdown("""
     padding-right: 1rem !important;
 }
 
-/* Memaksa elemen gambar/logo berada di tengah tanpa merusak aspect ratio */
-[data-testid="stImage"] {
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    margin: 0 auto !important;
-    width: 100% !important;
-}
-
-/* UKURAN DEFAULT (LAPTOP / DESKTOP) */
-[data-testid="stImage"] img {
-    width: 140px !important; /* Ukuran pas untuk laptop */
-    height: auto !important;
+/* Menghilangkan margin bawaan kolom Streamlit khusus logo agar bisa mepet */
+[data-testid="stHorizontalBlock"] {
+    margin-bottom: 0px !important;
 }
 
 /* Merapikan Text Area bawaan */
@@ -74,21 +64,15 @@ st.markdown("""
     transform: translateY(-1px);
 }
 
-/* ==========================================
-   CSS KHUSUS UNTUK HP / MOBILE (LAYAR KECIL)
-   ========================================== */
+/* CSS RESPONSIF: Otomatis mengecilkan tulisan jika dibuka di HP */
 @media (max-width: 768px) {
-    [data-testid="stImage"] img {
-        width: 110px !important; /* Logo sedikit mengecil di HP agar pas dan tidak kepotong */
-    }
-    
     h1 {
-        font-size: 28px !important; /* Judul mengecil di HP agar tidak patah dua baris */
-        margin-top: -10px !important; /* Jarak rapat yang disesuaikan untuk HP */
+        font-size: 28px !important; /* Judul mengecil di HP agar pas */
+        margin-top: -15px !important; /* Tetap rapat di HP */
     }
     
     p {
-        font-size: 15px !important; /* Sub-judul menyesuaikan layar HP */
+        font-size: 15px !important; /* Sub-judul mengecil di HP */
     }
 }
 </style>
@@ -113,23 +97,26 @@ except FileNotFoundError:
     st.error("Model (.pkl) tidak ditemukan, pastikan file berada di folder yang sama.")
 
 # ======================================
-# HEADER & LOGO (RESPONSIVE FIX)
+# HEADER & LOGO (DINKUNCI AMAN DI TENGAH)
 # ======================================
 
 # Spasi aman atas agar tidak menempel ke batas browser
 st.container(height=45, border=False)
 
-# Memanggil gambar secara langsung tanpa pembagian st.columns agar tidak hilang di HP
-st.image("logo-bank-bpd-bali.png")
+# Menggunakan kolom fleksibel: otomatis ke tengah di laptop, dan tetap aman di HP
+kiri, tengah, kanan = st.columns([1, 1, 1])
+with tengah:
+    # Mengunci ukuran lebar logo tepat 140 pixel agar pas di laptop dan HP (bebas eror layout)
+    st.image("logo-bank-bpd-bali.png", width=140)
 
-# Teks Judul Utama
+# Teks Judul Utama (Menempel rapat di bawah logo)
 st.markdown("""
 <h1 style="
     text-align: center;
     color: white;
     font-size: 38px;
     font-weight: bold;
-    margin-top: -20px; 
+    margin-top: -25px; 
     margin-bottom: 0px;
     line-height: 1.1;
     letter-spacing: -0.5px;">
@@ -137,7 +124,7 @@ st.markdown("""
 </h1>
 """, unsafe_allow_html=True)
 
-# Teks Sub-judul
+# Teks Sub-judul (Diberi margin-top minus agar menempel sangat dekat dengan judul atasnya)
 st.markdown("""
 <p style="
     text-align: center;
