@@ -1,58 +1,45 @@
-/* Background */
 .stApp{
-    background:#0d7bdc;
+    background:#eaf4ff;
 }
 
-/* Card putih */
-.card{
-    background:white;
-    padding:40px;
-    border-radius:20px;
-    box-shadow:0 8px 20px rgba(0,0,0,.25);
+.block-container{
+    max-width:700px;
+    padding-top:30px;
 }
 
-/* Judul */
 h1{
-    color:#1b5fa8;
-    text-align:center;
-    margin-bottom:0px;
+    color:#1565C0;
+    font-weight:bold;
 }
 
-/* Subjudul */
-.sub{
+.subtitle{
     text-align:center;
     color:#666;
     font-size:18px;
-    margin-bottom:25px;
+    margin-bottom:20px;
 }
 
-/* Logo */
-img{
-    display:block;
-    margin:auto;
+.stImage{
+    display:flex;
+    justify-content:center;
 }
 
-/* Text Area */
 .stTextArea textarea{
-    border-radius:12px;
-    border:2px solid #d9d9d9;
-    background:white;
-    color:black;
+    border-radius:12px !important;
+    font-size:16px;
 }
 
-/* Tombol */
 .stButton > button{
     width:100%;
-    height:50px;
-    background:#1b5fa8;
+    background:#1565C0;
     color:white;
     font-size:18px;
     font-weight:bold;
-    border:none;
     border-radius:10px;
+    height:50px;
 }
 
 .stButton > button:hover{
-    background:#154b87;
+    background:#0d47a1;
     color:white;
 }
