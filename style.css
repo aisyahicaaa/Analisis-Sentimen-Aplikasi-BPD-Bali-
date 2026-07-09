@@ -1,45 +1,86 @@
+/* ==========================
+   Background
+========================== */
 .stApp{
-    background:#eaf4ff;
+    background: #0B5D3B;
 }
 
+/* Container */
 .block-container{
-    max-width:700px;
-    padding-top:30px;
+    max-width: 750px;
+    padding-top: 30px;
 }
 
+/* Judul */
 h1{
-    color:#1565C0;
-    font-weight:bold;
+    color: white !important;
+    text-align: center;
+    font-weight: bold;
 }
 
+/* Subjudul */
 .subtitle{
-    text-align:center;
-    color:#666;
-    font-size:18px;
-    margin-bottom:20px;
+    text-align: center;
+    color: white;
+    font-size: 18px;
+    margin-bottom: 25px;
 }
 
-.stImage{
-    display:flex;
-    justify-content:center;
+/* Subheader */
+h3{
+    color: white !important;
 }
 
+/* Label */
+label{
+    color: white !important;
+    font-weight: bold;
+}
+
+/* Text Area */
 .stTextArea textarea{
-    border-radius:12px !important;
-    font-size:16px;
+    background: white !important;
+    color: black !important;
+    border-radius: 12px;
+    border: none;
+    font-size: 16px;
 }
 
+/* Placeholder */
+.stTextArea textarea::placeholder{
+    color: #888;
+}
+
+/* Tombol */
 .stButton > button{
-    width:100%;
-    background:#1565C0;
-    color:white;
-    font-size:18px;
-    font-weight:bold;
-    border-radius:10px;
-    height:50px;
+    width: 100%;
+    height: 50px;
+    background: white;
+    color: #0B5D3B;
+    border-radius: 10px;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
 }
 
+/* Hover tombol */
 .stButton > button:hover{
-    background:#0d47a1;
-    color:white;
+    background: #f2f2f2;
+    color: #0B5D3B;
+}
+
+/* Logo */
+.stImage{
+    display: flex;
+    justify-content: center;
+}
+
+/* Success */
+.stSuccess{
+    border-radius: 10px;
+}
+
+/* Error */
+.stError{
+    border-radius: 10px;
 }
