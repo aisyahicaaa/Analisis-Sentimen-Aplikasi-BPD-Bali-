@@ -24,77 +24,34 @@ st.markdown("""
 }
 
 .block-container{
-    max-width:720px;
-    padding-top:40px;
-}
-
-/* Logo */
-.logo{
-    text-align:center;
-    margin-top:20px;
-    margin-bottom:10px;
-}
-
-/* Judul */
-.judul{
-    text-align:center;
-    color:white;
-    font-size:55px;
-    font-weight:bold;
-    margin-bottom:0px;
-}
-
-/* Subtitle */
-.subjudul{
-    text-align:center;
-    color:white;
-    font-size:22px;
-    margin-top:5px;
-    margin-bottom:35px;
-}
-
-/* Label */
-.label{
-    color:white;
-    font-size:22px;
-    font-weight:bold;
+    max-width:760px;
+    padding-top:60px;
+    padding-bottom:40px;
 }
 
 /* Text Area */
 .stTextArea textarea{
     background:white !important;
     color:black !important;
-    border-radius:12px;
+    border-radius:12px !important;
     font-size:18px;
 }
 
 /* Tombol */
-.stButton>button{
-
+.stButton > button{
     width:100%;
-
     height:55px;
-
     background:white;
-
     color:#0B6B3A;
-
     font-size:20px;
-
     font-weight:bold;
-
     border-radius:10px;
-
     border:none;
-
 }
 
-.stButton>button:hover{
-
-    background:#ECECEC;
-
+.stButton > button:hover{
+    background:#efefef;
     color:#0B6B3A;
-
 }
 
 </style>
@@ -104,91 +61,96 @@ st.markdown("""
 # LOAD MODEL
 # ======================================
 
-with open("vectorizer.pkl","rb") as file:
-    vectorizer=pickle.load(file)
+with open("vectorizer.pkl","rb") as f:
+    vectorizer = pickle.load(f)
 
-with open("chi_selector.pkl","rb") as file:
-    chi_selector=pickle.load(file)
+with open("chi_selector.pkl","rb") as f:
+    chi_selector = pickle.load(f)
 
-with open("model_naive_bayes.pkl","rb") as file:
-    model=pickle.load(file)
+with open("model_naive_bayes.pkl","rb") as f:
+    model = pickle.load(f)
 
 # ======================================
 # HEADER
 # ======================================
 
-col1,col2,col3=st.columns([1,2,1])
+# Jarak dari atas
+st.markdown("<div style='height:25px'></div>", unsafe_allow_html=True)
+
+# Logo di tengah
+col1, col2, col3 = st.columns([1,2,1])
 
 with col2:
-    st.image("logo-bank-bpd-bali.png",width=130)
+    st.image("logo-bank-bpd-bali.png", width=190)
 
-st.markdown(
-"""
-<h1 class='judul'>
+# Jarak logo ke judul
+st.markdown("<div style='height:20px'></div>", unsafe_allow_html=True)
+
+st.markdown("""
+<h1 style="
+text-align:center;
+color:white;
+font-size:58px;
+font-weight:bold;
+margin-bottom:5px;">
 Analisis Sentimen
 </h1>
-""",
-unsafe_allow_html=True
-)
+""", unsafe_allow_html=True)
 
-st.markdown(
-"""
-<p class='subjudul'>
+st.markdown("""
+<p style="
+text-align:center;
+color:white;
+font-size:22px;
+margin-bottom:40px;">
 Ulasan Aplikasi BPD Bali Mobile
 </p>
-""",
-unsafe_allow_html=True
-)
+""", unsafe_allow_html=True)
 
 # ======================================
 # INPUT
 # ======================================
 
-st.markdown(
-"""
-<p class='label'>
+st.markdown("""
+<p style="
+color:white;
+font-size:24px;
+font-weight:bold;
+margin-bottom:10px;">
 Masukkan Ulasan
 </p>
-""",
-unsafe_allow_html=True
-)
+""", unsafe_allow_html=True)
 
-ulasan=st.text_area(
-"",
-height=150,
-placeholder="Contoh: Aplikasi sangat membantu dan mudah digunakan."
+ulasan = st.text_area(
+    "",
+    height=150,
+    placeholder="Contoh: Aplikasi sangat membantu dan mudah digunakan."
 )
 
 # ======================================
 # BUTTON
 # ======================================
 
-if st.button("🔍 Analisis Sentimen",use_container_width=True):
+if st.button("🔍 Analisis Sentimen", use_container_width=True):
 
-    if ulasan.strip()=="":
-
+    if ulasan.strip() == "":
         st.warning("Masukkan ulasan terlebih dahulu.")
 
     else:
 
-        hasil=preprocessing(ulasan)
+        hasil = preprocessing(ulasan)
 
-        vector=vectorizer.transform([hasil])
+        vector = vectorizer.transform([hasil])
+        vector = chi_selector.transform(vector)
 
-        vector=chi_selector.transform(vector)
-
-        prediksi=model.predict(vector)[0]
+        prediksi = model.predict(vector)[0]
 
         st.divider()
 
-        if prediksi==1:
-
+        if prediksi == 1:
             st.success("😊 Sentimen Positif")
-
         else:
-
             st.error("😞 Sentimen Negatif")
 
         with st.expander("Hasil Preprocessing"):
-
             st.write(hasil)
