@@ -12,7 +12,7 @@ st.set_page_config(
 )
 
 # ======================================
-# REFINEMENT CSS (SUPER RAPAT & PADAT)
+# REFINEMENT CSS (FULLY RESPONSIVE & PADAT)
 # ======================================
 st.markdown("""
 <style>
@@ -21,19 +21,29 @@ st.markdown("""
     background-color: #0B6B3A;
 }
 
-/* Mengatur container utama */
+/* Mengatur container utama agar fleksibel di layar HP dan Laptop */
 .block-container {
     max-width: 680px;
+    width: 100%;
     padding-top: 0px !important; 
     padding-bottom: 40px;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
 }
 
-/* Memastikan gambar/logo di dalam kolom otomatis centering */
+/* Memaksa elemen gambar/logo berada di tengah tanpa merusak aspect ratio */
 [data-testid="stImage"] {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0 auto;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    margin: 0 auto !important;
+    width: 100% !important;
+}
+
+/* UKURAN DEFAULT (LAPTOP / DESKTOP) */
+[data-testid="stImage"] img {
+    width: 140px !important; /* Ukuran pas untuk laptop */
+    height: auto !important;
 }
 
 /* Merapikan Text Area bawaan */
@@ -63,6 +73,24 @@ st.markdown("""
     color: #0B6B3A !important;
     transform: translateY(-1px);
 }
+
+/* ==========================================
+   CSS KHUSUS UNTUK HP / MOBILE (LAYAR KECIL)
+   ========================================== */
+@media (max-width: 768px) {
+    [data-testid="stImage"] img {
+        width: 110px !important; /* Logo sedikit mengecil di HP agar pas dan tidak kepotong */
+    }
+    
+    h1 {
+        font-size: 28px !important; /* Judul mengecil di HP agar tidak patah dua baris */
+        margin-top: -10px !important; /* Jarak rapat yang disesuaikan untuk HP */
+    }
+    
+    p {
+        font-size: 15px !important; /* Sub-judul menyesuaikan layar HP */
+    }
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -85,18 +113,16 @@ except FileNotFoundError:
     st.error("Model (.pkl) tidak ditemukan, pastikan file berada di folder yang sama.")
 
 # ======================================
-# HEADER & LOGO
+# HEADER & LOGO (RESPONSIVE FIX)
 # ======================================
 
-# Container kosong menjaga jarak atas browser agar logo tidak kepotong
+# Spasi aman atas agar tidak menempel ke batas browser
 st.container(height=45, border=False)
 
-# Mengunci posisi logo di tengah
-kiri, tengah, kanan = st.columns([1.6, 1, 1.6]) 
-with tengah:
-    st.image("logo-bank-bpd-bali.png", use_container_width=True)
+# Memanggil gambar secara langsung tanpa pembagian st.columns agar tidak hilang di HP
+st.image("logo-bank-bpd-bali.png")
 
-# Teks Judul Utama (Menempel rapat di bawah logo)
+# Teks Judul Utama
 st.markdown("""
 <h1 style="
     text-align: center;
@@ -105,13 +131,13 @@ st.markdown("""
     font-weight: bold;
     margin-top: -20px; 
     margin-bottom: 0px;
-    line-height: 1.0;
+    line-height: 1.1;
     letter-spacing: -0.5px;">
     Analisis Sentimen
 </h1>
 """, unsafe_allow_html=True)
 
-# Teks Sub-judul (Diberi margin-top minus agar menempel sangat dekat dengan judul atasnya)
+# Teks Sub-judul
 st.markdown("""
 <p style="
     text-align: center;
