@@ -1,1 +1,138 @@
+/* ==========================================
+   RESET & DASAR HALAMAN
+   ========================================== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
+body {
+    background-color: #0B6B3A; /* Warna Hijau Utama BPD Bali */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;  /* Memulai dari atas agar margin container bekerja */
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* KONTEN UTAMA (Satu Paket Terpusat) */
+.container {
+    width: 100%;
+    max-width: 720px;
+    text-align: center;
+    margin-top: 50px; /* MENURUNKAN HALAMAN: Menjaga logo atas tidak kepotong browser */
+}
+
+/* ==========================================
+   BAGIAN LOGO DAN TYPOGRAPHY (DIKUNCI RAPAT)
+   ========================================== */
+.logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 0px; /* Menghapus jarak bawah logo */
+}
+
+.logo img {
+    width: 100%;
+    max-width: 220px;   /* Ukuran lebar logo proporsional */
+    height: auto;
+    object-fit: contain;
+}
+
+h1 {
+    color: white;
+    font-size: 56px;
+    font-weight: bold;
+    margin-top: 10px;   /* Menarik teks ke atas agar memeluk erat bawah logo */
+    margin-bottom: 0px;
+    line-height: 1.1;
+}
+
+h3 {
+    color: white;
+    font-size: 22px;
+    font-weight: normal;
+    margin-top: 5px;    /* Rapat menempel di bawah judul H1 */
+    margin-bottom: 40px;/* Jarak longgar menuju label input form */
+}
+
+/* ==========================================
+   FORM, TEXTAREA, DAN BUTTON
+   ========================================== */
+form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    text-align: left; /* Teks "Masukkan Ulasan" rata kiri sesuai mockup */
+}
+
+label {
+    font-size: 22px;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 12px;
+}
+
+textarea {
+    width: 100%;
+    height: 170px;
+    background: white;
+    color: black;
+    font-size: 18px;
+    border-radius: 12px;
+    padding: 15px;
+    border: none;
+    outline: none;
+    resize: none;
+    margin-bottom: 25px; /* Jarak pas dari textarea ke tombol submit */
+}
+
+button {
+    width: 100%;
+    height: 55px;
+    background: white !important;
+    color: #0B6B3A !important;
+    font-size: 20px;
+    font-weight: bold;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    position: relative;
+    z-index: 10;         /* Mengamankan tombol agar 100% bisa diklik */
+    transition: all 0.2s ease;
+}
+
+button:hover {
+    background: #F2F2F2 !important;
+    transform: translateY(-1px);
+}
+
+/* ==========================================
+   BOX NOTIFIKASI HASIL SENTIMEN
+   ========================================== */
+.hasil {
+    margin-top: 25px;
+    padding: 15px;
+    border-radius: 10px;
+    color: white;
+    text-align: center;
+}
+
+/* Warna dinamis berdasarkan pengiriman class dari Flask */
+.hasil.positif {
+    background-color: #16A34A; /* Box Hijau Terang untuk Positif */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.hasil.negatif {
+    background-color: #DC2626; /* Box Merah Pastel/Terang untuk Negatif */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.hasil h2 {
+    font-size: 22px;
+}
