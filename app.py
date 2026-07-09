@@ -12,7 +12,7 @@ st.set_page_config(
 )
 
 # ======================================
-# REFINEMENT CSS (FULLY RESPONSIVE & PADAT)
+# REFINEMENT CSS (SUPER RAPAT & PADAT)
 # ======================================
 st.markdown("""
 <style>
@@ -21,28 +21,19 @@ st.markdown("""
     background-color: #0B6B3A;
 }
 
-/* Mengatur container utama agar fleksibel di berbagai layar */
+/* Mengatur container utama */
 .block-container {
     max-width: 680px;
-    width: 100%;
     padding-top: 0px !important; 
     padding-bottom: 40px;
-    padding-left: 1rem !important;
-    padding-right: 1rem !important;
 }
 
-/* Mengunci Gambar/Logo agar responsif di tengah */
+/* Memastikan gambar/logo di dalam kolom otomatis centering */
 [data-testid="stImage"] {
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 0 auto;
-    width: 100% !important;
-}
-
-[data-testid="stImage"] img {
-    width: 140px !important; /* Ukuran default laptop */
-    height: auto !important;
 }
 
 /* Merapikan Text Area bawaan */
@@ -72,26 +63,6 @@ st.markdown("""
     color: #0B6B3A !important;
     transform: translateY(-1px);
 }
-
-/* CSS RESPONSIF: Aturan khusus untuk layar HP / Mobile (Maksimal lebar 768px) */
-@media (max-width: 768px) {
-    [data-testid="stImage"] img {
-        width: 110px !important; /* Logo sedikit mengecil di HP agar proporsional */
-    }
-    
-    .stApp h1 {
-        font-size: 28px !important; /* Judul mengecil di HP agar tidak patah berantakan */
-        margin-top: -10px !important; /* Penyesuaian jarak rapat untuk mobile */
-    }
-    
-    .stApp p {
-        font-size: 15px !important; /* Sub-judul mengecil di HP */
-    }
-    
-    .input-label {
-        font-size: 16px !important;
-    }
-}
 </style>
 """, unsafe_allow_html=True)
 
@@ -120,8 +91,10 @@ except FileNotFoundError:
 # Container kosong menjaga jarak atas browser agar logo tidak kepotong
 st.container(height=45, border=False)
 
-# Menggunakan satu kolom penuh agar logo tidak terhimpit di HP, centering diatur lewat CSS [data-testid="stImage"]
-st.image("logo-bank-bpd-bali.png")
+# Mengunci posisi logo di tengah
+kiri, tengah, kanan = st.columns([1.6, 1, 1.6]) 
+with tengah:
+    st.image("logo-bank-bpd-bali.png", use_container_width=True)
 
 # Teks Judul Utama (Menempel rapat di bawah logo)
 st.markdown("""
@@ -132,7 +105,7 @@ st.markdown("""
     font-weight: bold;
     margin-top: -20px; 
     margin-bottom: 0px;
-    line-height: 1.1;
+    line-height: 1.0;
     letter-spacing: -0.5px;">
     Analisis Sentimen
 </h1>
@@ -154,7 +127,7 @@ st.markdown("""
 # INPUT USER
 # ======================================
 st.markdown("""
-<p class="input-label" style="
+<p style="
     font-size: 18px;
     font-weight: bold;
     color: white;
