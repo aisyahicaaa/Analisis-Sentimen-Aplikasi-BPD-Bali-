@@ -1,6 +1,5 @@
 import streamlit as st
 import pickle
-import base64
 from preprocessing import preprocessing
 
 # ======================================
@@ -13,7 +12,7 @@ st.set_page_config(
 )
 
 # ======================================
-# REFINEMENT CSS (FIX LOGO & RESPONSIVE)
+# REFINEMENT CSS (SUPER RAPAT & PADAT)
 # ======================================
 st.markdown("""
 <style>
@@ -22,14 +21,19 @@ st.markdown("""
     background-color: #0B6B3A;
 }
 
-/* Mengatur container utama agar fleksibel */
+/* Mengatur container utama */
 .block-container {
     max-width: 680px;
-    width: 100%;
-    padding-top: 40px !important; /* Memberikan ruang atas agar logo tidak mentok */
+    padding-top: 0px !important; 
     padding-bottom: 40px;
-    padding-left: 1rem !important;
-    padding-right: 1rem !important;
+}
+
+/* Memastikan gambar/logo di dalam kolom otomatis centering */
+[data-testid="stImage"] {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
 }
 
 /* Merapikan Text Area bawaan */
@@ -59,52 +63,6 @@ st.markdown("""
     color: #0B6B3A !important;
     transform: translateY(-1px);
 }
-
-/* Kerapatan Text untuk Judul HTML */
-.brand-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    width: 100%;
-    margin-bottom: 25px;
-}
-
-.brand-logo {
-    width: 130px !important;
-    height: auto !important;
-    margin-bottom: 10px;
-}
-
-.brand-title {
-    color: white !important;
-    font-size: 38px !important;
-    font-weight: bold !important;
-    margin: 0 !important;
-    line-height: 1.1 !important;
-    letter-spacing: -0.5px !important;
-}
-
-.brand-subtitle {
-    color: rgba(255, 255, 255, 0.9) !important;
-    font-size: 18px !important;
-    margin-top: 3px !important;
-    margin-bottom: 0px !important;
-}
-
-/* CSS RESPONSIVE HP */
-@media (max-width: 768px) {
-    .brand-logo {
-        width: 105px !important; /* Logo mengecil sedikit di HP */
-    }
-    .brand-title {
-        font-size: 28px !important; /* Judul mengecil di HP agar pas */
-    }
-    .brand-subtitle {
-        font-size: 15px !important;
-    }
-}
 </style>
 """, unsafe_allow_html=True)
 
@@ -127,28 +85,43 @@ except FileNotFoundError:
     st.error("Model (.pkl) tidak ditemukan, pastikan file berada di folder yang sama.")
 
 # ======================================
-# FUNGSI ENKODE GAMBAR LOKAL KE BASE64
+# HEADER & LOGO
 # ======================================
-# Ini trik wajib agar HTML di Streamlit bisa membaca file gambar lokal laptop Anda
-def get_image_base64(path):
-    try:
-        with open(path, "rb") as image_file:
-            return base64.b64encode(image_file.read()).decode()
-    except FileNotFoundError:
-        return ""
 
-img_base64 = get_image_base64("logo-bank-bpd-bali.png")
+# Container kosong menjaga jarak atas browser agar logo tidak kepotong
+st.container(height=45, border=False)
 
-# ======================================
-# HEADER & LOGO MURNI HTML (100% LURUS TENGAH)
-# ======================================
-st.html(f"""
-<div class="brand-container">
-    <img class="brand-logo" src="data:image/png;base64,{img_base64}" alt="Logo BPD Bali">
-    <h1 class="brand-title">Analisis Sentimen</h1>
-    <p class="brand-subtitle">Ulasan Aplikasi BPD Bali Mobile</p>
-</div>
-""")
+# Mengunci posisi logo di tengah
+kiri, tengah, kanan = st.columns([1.6, 1, 1.6]) 
+with tengah:
+    st.image("logo-bank-bpd-bali.png", use_container_width=True)
+
+# Teks Judul Utama (Menempel rapat di bawah logo)
+st.markdown("""
+<h1 style="
+    text-align: center;
+    color: white;
+    font-size: 38px;
+    font-weight: bold;
+    margin-top: -20px; 
+    margin-bottom: 0px;
+    line-height: 1.0;
+    letter-spacing: -0.5px;">
+    Analisis Sentimen
+</h1>
+""", unsafe_allow_html=True)
+
+# Teks Sub-judul (Diberi margin-top minus agar menempel sangat dekat dengan judul atasnya)
+st.markdown("""
+<p style="
+    text-align: center;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 18px;
+    margin-top: -3px; 
+    margin-bottom: 20px;">
+    Ulasan Aplikasi BPD Bali Mobile
+</p>
+""", unsafe_allow_html=True)
 
 # ======================================
 # INPUT USER
