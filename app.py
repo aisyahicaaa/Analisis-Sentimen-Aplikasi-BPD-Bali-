@@ -21,19 +21,28 @@ st.markdown("""
     background-color: #0B6B3A;
 }
 
-/* Mengatur container utama agar aman dari potong browser */
+/* Mengatur container utama agar aman */
 .block-container {
     max-width: 680px;
-    padding-top: 40px; /* Memberikan ruang napas di atas agar logo utuh */
+    padding-top: 20px; 
     padding-bottom: 40px;
 }
 
-/* Memastikan gambar/logo di dalam kolom otomatis centering */
-[data-testid="stImage"] {
+/* CSS Khusus Kontainer Logo Baru (Menurunkan logo tanpa menjauhkan tulisan) */
+.logo-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 0 auto;
+    width: 100%;
+    padding-top: 40px;    /* Ini yang mendorong LOGO TURUN agar tidak kepotong */
+    margin-bottom: 5px;   /* Ini yang menjaga LOGO TETAP DEKAT dengan tulisan h1 */
+}
+
+.logo-container img {
+    width: 100%;
+    max-width: 140px;     /* Ukuran mini proporsional */
+    height: auto;
+    object-fit: contain;
 }
 
 /* Merapikan Text Area bawaan */
@@ -85,13 +94,16 @@ except FileNotFoundError:
     st.error("Model (.pkl) tidak ditemukan, pastikan file berada di folder yang sama.")
 
 # ======================================
-# HEADER & LOGO (PROPORSIONAL)
+# HEADER & LOGO (PERBAIKAN PERMANEN)
 # ======================================
 
-# Mengubah rasio kolom agar logo di tengah menjadi lebih kecil (proporsional)
-kiri, tengah, kanan = st.columns([1.5, 1, 1.5]) 
-with tengah:
-    st.image("logo-bank-bpd-bali.png", use_container_width=True)
+# Kita tidak pakai st.columns/st.image bawaan untuk logo agar tidak di-override Streamlit.
+# Kita panggil langsung via HTML bertingkat yang sudah dikunci oleh CSS di atas.
+st.markdown("""
+<div class="logo-container">
+    <img src="app/static/logo-bank-bpd-bali.png" alt="Logo BPD Bali">
+</div>
+""", unsafe_allow_html=True)
 
 # Teks Judul Utama (Ukurannya diperkecil ke 38px & margin nempel)
 st.markdown("""
@@ -100,7 +112,7 @@ st.markdown("""
     color: white;
     font-size: 38px;
     font-weight: bold;
-    margin-top: 5px; 
+    margin-top: 0px; 
     margin-bottom: 0px;
     letter-spacing: -0.5px;">
     Analisis Sentimen
@@ -139,7 +151,6 @@ ulasan = st.text_area(
     label_visibility="collapsed"
 )
 
-# Mengurangi jarak kosong yang terlalu renggang antara input dan tombol
 st.markdown("<div style='margin-top: 15px;'></div>", unsafe_allow_html=True)
 
 # ======================================
