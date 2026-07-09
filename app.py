@@ -12,7 +12,7 @@ st.set_page_config(
 )
 
 # ======================================
-# REFINEMENT CSS (PROPORSIONAL & SUPER RAPAT)
+# REFINEMENT CSS (SUPER RAPAT & PADAT)
 # ======================================
 st.markdown("""
 <style>
@@ -24,7 +24,7 @@ st.markdown("""
 /* Mengatur container utama */
 .block-container {
     max-width: 680px;
-    padding-top: 0px !important; /* Kita nolkan bawaan Streamlit */
+    padding-top: 0px !important; 
     padding-bottom: 40px;
 }
 
@@ -85,51 +85,53 @@ except FileNotFoundError:
     st.error("Model (.pkl) tidak ditemukan, pastikan file berada di folder yang sama.")
 
 # ======================================
-# HEADER & LOGO (SOLUSI AMAN & RAPAT)
+# HEADER & LOGO (JARAK AMAN ATAS)
 # ======================================
 
-# Trik: Membuat container kosong dengan tinggi 50px untuk menurunkan logo agar tidak kepotong browser
-st.container(height=50, border=False)
+# Container kosong untuk menurunkan logo agar tidak kepotong layar atas browser
+st.container(height=45, border=False)
 
-# Menggunakan kolom asli Streamlit agar logo 100% muncul dan ukurannya mini/pas
+# Mengunci posisi logo di tengah dengan ukuran mini/pas
 kiri, tengah, kanan = st.columns([1.6, 1, 1.6]) 
 with tengah:
     st.image("logo-bank-bpd-bali.png", use_container_width=True)
 
-# Teks Judul Utama (Rapat menempel di bawah logo)
+# Teks Judul Utama (Menggunakan margin-top minus agar naik memeluk bagian bawah logo)
 st.markdown("""
 <h1 style="
     text-align: center;
     color: white;
     font-size: 38px;
     font-weight: bold;
-    margin-top: 5px; 
+    margin-top: -20px; 
     margin-bottom: 0px;
+    line-height: 1.0;
     letter-spacing: -0.5px;">
     Analisis Sentimen
 </h1>
 """, unsafe_allow_html=True)
 
-# Teks Sub-judul
+# Teks Sub-judul (Dibuat menempel langsung di bawah h1)
 st.markdown("""
 <p style="
     text-align: center;
     color: rgba(255, 255, 255, 0.9);
     font-size: 18px;
-    margin-top: 0px;
-    margin-bottom: 30px;">
+    margin-top: 2px;
+    margin-bottom: 20px;">
     Ulasan Aplikasi BPD Bali Mobile
 </p>
 """, unsafe_allow_html=True)
 
 # ======================================
-# INPUT USER
+# INPUT USER (SANGAT DEKAT DENGAN SUBJUDUL)
 # ======================================
 st.markdown("""
 <p style="
     font-size: 18px;
     font-weight: bold;
     color: white;
+    margin-top: 0px;
     margin-bottom: 8px;">
     Masukkan Ulasan
 </p>
@@ -142,7 +144,8 @@ ulasan = st.text_area(
     label_visibility="collapsed"
 )
 
-st.markdown("<div style='margin-top: 15px;'></div>", unsafe_allow_html=True)
+# Jarak tipis ke tombol
+st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)
 
 # ======================================
 # BUTTON & PROSES PREDIKSI
