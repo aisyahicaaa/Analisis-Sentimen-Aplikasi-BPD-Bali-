@@ -12,7 +12,7 @@ st.set_page_config(
 )
 
 # ======================================
-# REFINEMENT CSS (FULL GREEN THEME)
+# REFINEMENT CSS (PROPORSIONAL & SUPER RAPAT)
 # ======================================
 st.markdown("""
 <style>
@@ -21,10 +21,10 @@ st.markdown("""
     background-color: #0B6B3A;
 }
 
-/* Mengatur container utama agar pas di tengah layar */
+/* Mengatur container utama agar aman dari potong browser */
 .block-container {
-    max-width: 720px;
-    padding-top: 30px; /* Dikurangi agar tidak terlalu turun */
+    max-width: 680px;
+    padding-top: 40px; /* Memberikan ruang napas di atas agar logo utuh */
     padding-bottom: 40px;
 }
 
@@ -40,21 +40,21 @@ st.markdown("""
 .stTextArea textarea {
     background: white !important;
     color: black !important;
-    font-size: 18px !important;
-    border-radius: 12px !important;
-    padding: 15px !important;
+    font-size: 16px !important;
+    border-radius: 10px !important;
+    padding: 12px !important;
 }
 
 /* Merapikan Tombol Analisis */
 .stButton > button {
     width: 100%;
-    height: 55px;
+    height: 50px;
     background: white !important;
     color: #0B6B3A !important;
-    font-size: 20px !important;
+    font-size: 18px !important;
     font-weight: bold !important;
     border: none !important;
-    border-radius: 10px !important;
+    border-radius: 8px !important;
     transition: all 0.2s ease;
 }
 
@@ -85,35 +85,36 @@ except FileNotFoundError:
     st.error("Model (.pkl) tidak ditemukan, pastikan file berada di folder yang sama.")
 
 # ======================================
-# HEADER & LOGO (RAPAT & SIMETRIS)
+# HEADER & LOGO (PROPORSIONAL)
 # ======================================
 
-# Membuat 3 kolom untuk mengunci logo di tengah
-kiri, tengah, kanan = st.columns([1, 1.8, 1])
+# Mengubah rasio kolom agar logo di tengah menjadi lebih kecil (proporsional)
+kiri, tengah, kanan = st.columns([1.5, 1, 1.5]) 
 with tengah:
     st.image("logo-bank-bpd-bali.png", use_container_width=True)
 
-# Teks Judul Utama (Jarak margin-top dikecilkan menjadi 5px)
+# Teks Judul Utama (Ukurannya diperkecil ke 38px & margin nempel)
 st.markdown("""
 <h1 style="
     text-align: center;
     color: white;
-    font-size: 56px;
+    font-size: 38px;
     font-weight: bold;
     margin-top: 5px; 
-    margin-bottom: 0px;">
+    margin-bottom: 0px;
+    letter-spacing: -0.5px;">
     Analisis Sentimen
 </h1>
 """, unsafe_allow_html=True)
 
-# Teks Sub-judul (Jarak margin-top dibuat 0 dan margin-bottom dikurangi jadi 25px)
+# Teks Sub-judul (Diperkecil ke 18px & jarak bawah disesuaikan)
 st.markdown("""
 <p style="
     text-align: center;
-    color: white;
-    font-size: 22px;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 18px;
     margin-top: 0px;
-    margin-bottom: 25px;">
+    margin-bottom: 30px;">
     Ulasan Aplikasi BPD Bali Mobile
 </p>
 """, unsafe_allow_html=True)
@@ -123,22 +124,23 @@ st.markdown("""
 # ======================================
 st.markdown("""
 <p style="
-    font-size: 22px;
+    font-size: 18px;
     font-weight: bold;
     color: white;
-    margin-bottom: 10px;">
+    margin-bottom: 8px;">
     Masukkan Ulasan
 </p>
 """, unsafe_allow_html=True)
 
 ulasan = st.text_area(
     "",
-    height=170,
+    height=150,
     placeholder="Contoh: Aplikasi sangat membantu dan mudah digunakan.",
     label_visibility="collapsed"
 )
 
-st.markdown("<br>", unsafe_allow_html=True)
+# Mengurangi jarak kosong yang terlalu renggang antara input dan tombol
+st.markdown("<div style='margin-top: 15px;'></div>", unsafe_allow_html=True)
 
 # ======================================
 # BUTTON & PROSES PREDIKSI
