@@ -1,10 +1,7 @@
-from flask import Flask, render_template, request
+import streamlit as st
 import pickle
 
 from preprocessing import preprocessing
-
-# Membuat aplikasi Flask
-app = Flask(__name__)
 
 # ==========================
 # Load Model
@@ -19,19 +16,24 @@ with open("Model/model_naive_bayes.pkl", "rb") as file:
     model = pickle.load(file)
 
 # ==========================
-# Halaman Utama
+# Tampilan Streamlit
 # ==========================
-@app.route("/", methods=["GET", "POST"])
-def index():
 
-    hasil = None
-    warna = ""
-    teks = ""
+st.set_page_config(
+    page_title="Analisis Sentimen BPD Bali",
+    page_icon="📱"
+)
 
-    if request.method == "POST":
+st.title("📱 Analisis Sentimen Aplikasi BPD Bali Mobile")
+st.write("Masukkan ulasan pengguna untuk mengetahui hasil analisis sentimen.")
 
-        # Mengambil input dari form
-        teks = request.form["ulasan"]
+teks = st.text_area("Masukkan Ulasan")
+
+if st.button("Analisis Sentimen"):
+
+    if teks.strip() == "":
+        st.warning("Masukkan ulasan terlebih dahulu.")
+    else:
 
         # Preprocessing
         clean_text = preprocessing(teks)
@@ -39,29 +41,13 @@ def index():
         # Vectorisasi
         vector = vectorizer.transform([clean_text])
 
-        # Seleksi fitur Chi-Square
+        # Seleksi fitur
         vector = chi_selector.transform(vector)
 
         # Prediksi
         prediksi = model.predict(vector)[0]
 
-        # Menentukan hasil
         if prediksi == 1:
-            hasil = "😊 Sentimen Positif"
-            warna = "positif"
+            st.success("😊 Sentimen Positif")
         else:
-            hasil = "😞 Sentimen Negatif"
-            warna = "negatif"
-
-    return render_template(
-        "index.html",
-        hasil=hasil,
-        warna=warna,
-        teks=teks
-    )
-
-# ==========================
-# Menjalankan Flask
-# ==========================
-if __name__ == "__main__":
-    app.run(debug=True)
+            st.error("😞 Sentimen Negatif")
