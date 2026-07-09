@@ -1,12 +1,75 @@
-from flask import Flask, render_template, request
+import streamlit as st
 import pickle
-from preprocessing import preprocessing  # Memastikan file preprocessing.py Anda ada di folder yang sama
-
-app = Flask(__name__)
+from preprocessing import preprocessing
 
 # ======================================
-# LOAD MODEL & SELEKSI FITUR (CHI-SQUARE)
+# KONFIGURASI HALAMAN
 # ======================================
+st.set_page_config(
+    page_title="Analisis Sentimen BPD Bali",
+    page_icon="🏦",
+    layout="centered"
+)
+
+# ======================================
+# REFINEMENT CSS (FULL GREEN THEME)
+# ======================================
+st.markdown("""
+<style>
+/* Background Full Hijau BPD Bali */
+.stApp {
+    background-color: #0B6B3A;
+}
+
+/* Mengatur container utama agar pas di tengah layar */
+.block-container {
+    max-width: 720px;
+    padding-top: 30px; /* Dikurangi agar tidak terlalu turun */
+    padding-bottom: 40px;
+}
+
+/* Memastikan gambar/logo di dalam kolom otomatis centering */
+[data-testid="stImage"] {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+
+/* Merapikan Text Area bawaan */
+.stTextArea textarea {
+    background: white !important;
+    color: black !important;
+    font-size: 18px !important;
+    border-radius: 12px !important;
+    padding: 15px !important;
+}
+
+/* Merapikan Tombol Analisis */
+.stButton > button {
+    width: 100%;
+    height: 55px;
+    background: white !important;
+    color: #0B6B3A !important;
+    font-size: 20px !important;
+    font-weight: bold !important;
+    border: none !important;
+    border-radius: 10px !important;
+    transition: all 0.2s ease;
+}
+
+.stButton > button:hover {
+    background: #F2F2F2 !important;
+    color: #0B6B3A !important;
+    transform: translateY(-1px);
+}
+</style>
+""", unsafe_allow_html=True)
+
+# ======================================
+# LOAD MODEL
+# ======================================
+@st.cache_resource
 def load_models():
     with open("vectorizer.pkl", "rb") as file:
         vec = pickle.load(file)
@@ -19,49 +82,82 @@ def load_models():
 try:
     vectorizer, chi_selector, model = load_models()
 except FileNotFoundError:
-    print("PENTING: File .pkl model Anda tidak ditemukan di direktori utama!")
+    st.error("Model (.pkl) tidak ditemukan, pastikan file berada di folder yang sama.")
 
 # ======================================
-# ROUTE UTAMA APLIKASI
+# HEADER & LOGO (RAPAT & SIMETRIS)
 # ======================================
-@app.route("/", methods=["GET", "POST"])
-def index():
-    teks = ""
-    hasil = ""
-    warna = ""
 
-    if request.method == "POST":
-        # Ambil data input dari textarea HTML
-        ulasan_user = request.form.get("ulasan")
+# Membuat 3 kolom untuk mengunci logo di tengah
+kiri, tengah, kanan = st.columns([1, 1.8, 1])
+with tengah:
+    st.image("logo-bank-bpd-bali.png", use_container_width=True)
+
+# Teks Judul Utama (Jarak margin-top dikecilkan menjadi 5px)
+st.markdown("""
+<h1 style="
+    text-align: center;
+    color: white;
+    font-size: 56px;
+    font-weight: bold;
+    margin-top: 5px; 
+    margin-bottom: 0px;">
+    Analisis Sentimen
+</h1>
+""", unsafe_allow_html=True)
+
+# Teks Sub-judul (Jarak margin-top dibuat 0 dan margin-bottom dikurangi jadi 25px)
+st.markdown("""
+<p style="
+    text-align: center;
+    color: white;
+    font-size: 22px;
+    margin-top: 0px;
+    margin-bottom: 25px;">
+    Ulasan Aplikasi BPD Bali Mobile
+</p>
+""", unsafe_allow_html=True)
+
+# ======================================
+# INPUT USER
+# ======================================
+st.markdown("""
+<p style="
+    font-size: 22px;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 10px;">
+    Masukkan Ulasan
+</p>
+""", unsafe_allow_html=True)
+
+ulasan = st.text_area(
+    "",
+    height=170,
+    placeholder="Contoh: Aplikasi sangat membantu dan mudah digunakan.",
+    label_visibility="collapsed"
+)
+
+st.markdown("<br>", unsafe_allow_html=True)
+
+# ======================================
+# BUTTON & PROSES PREDIKSI
+# ======================================
+if st.button("🔍 Analisis Sentimen"):
+    if ulasan.strip() == "":
+        st.warning("Masukkan ulasan terlebih dahulu.")
+    else:
+        hasil = preprocessing(ulasan)
+        vector = vectorizer.transform([hasil])
+        vector = chi_selector.transform(vector)
+        prediksi = model.predict(vector)[0]
         
-        if ulasan_user and ulasan_user.strip() != "":
-            teks = ulasan_user  # Agar teks tidak hilang dari textarea setelah submit
+        st.markdown("<br>", unsafe_allow_html=True)
+        
+        if prediksi == 1:
+            st.success("😊 Sentimen Terdeteksi: POSITIF")
+        else:
+            st.error("😞 Sentimen Terdeteksi: NEGATIF")
             
-            # 1. Tahap Preprocessing Data Teks
-            teks_bersih = preprocessing(ulasan_user)
-            
-            # 2. Transformasi TF-IDF Vectorizer
-            vector = vectorizer.transform([teks_bersih])
-            
-            # 3. Reduksi Dimensi Fitur Menggunakan Chi-Square
-            vector_chi = chi_selector.transform(vector)
-            
-            # 4. Prediksi Menggunakan Naïve Bayes Classifier
-            prediksi = model.predict(vector_chi)[0]
-            
-            # 5. Penentuan Label Hasil Klasifikasi Akhir
-            if prediksi == 1:
-                hasil = "😊 Sentimen Terdeteksi: POSITIF"
-                warna = "positif"  # Memanggil class .hasil.positif di CSS
-            else:
-                hasil = "😞 Sentimen Terdeteksi: NEGATIF"
-                warna = "negatif"  # Memanggil class .hasil.negatif di CSS
-
-    # Kirim data ke templates/index.html
-    return render_template("index.html", teks=teks, hasil=hasil, warna=warna)
-
-# ======================================
-# MENJALANKAN SERVER FLASK
-# ======================================
-if __name__ == "__main__":
-    app.run(debug=True)
+        with st.expander("Lihat Hasil Preprocessing"):
+            st.write(hasil)
