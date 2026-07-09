@@ -20,38 +20,57 @@ st.markdown("""
 <style>
 
 .stApp{
-    background:#0B6B3A;
+    background-color:#0B6B3A;
 }
 
 .block-container{
-    max-width:760px;
-    padding-top:60px;
+    max-width:720px;
+    padding-top:20px;
     padding-bottom:40px;
 }
 
 /* Text Area */
+
 .stTextArea textarea{
+
     background:white !important;
+
     color:black !important;
+
+    font-size:18px !important;
+
     border-radius:12px !important;
-    font-size:18px;
+
 }
 
 /* Tombol */
+
 .stButton > button{
+
     width:100%;
+
     height:55px;
+
     background:white;
+
     color:#0B6B3A;
+
     font-size:20px;
+
     font-weight:bold;
-    border-radius:10px;
+
     border:none;
+
+    border-radius:10px;
+
 }
 
 .stButton > button:hover{
-    background:#efefef;
+
+    background:#F2F2F2;
+
     color:#0B6B3A;
+
 }
 
 </style>
@@ -61,37 +80,34 @@ st.markdown("""
 # LOAD MODEL
 # ======================================
 
-with open("vectorizer.pkl","rb") as f:
-    vectorizer = pickle.load(f)
+with open("vectorizer.pkl","rb") as file:
+    vectorizer = pickle.load(file)
 
-with open("chi_selector.pkl","rb") as f:
-    chi_selector = pickle.load(f)
+with open("chi_selector.pkl","rb") as file:
+    chi_selector = pickle.load(file)
 
-with open("model_naive_bayes.pkl","rb") as f:
-    model = pickle.load(f)
+with open("model_naive_bayes.pkl","rb") as file:
+    model = pickle.load(file)
 
 # ======================================
 # HEADER
 # ======================================
 
-# Jarak dari atas
-st.markdown("<div style='height:25px'></div>", unsafe_allow_html=True)
+st.markdown("<br>", unsafe_allow_html=True)
 
 # Logo di tengah
-col1, col2, col3 = st.columns([1,2,1])
+kiri, tengah, kanan = st.columns([1,2,1])
 
-with col2:
-    st.image("logo-bank-bpd-bali.png", width=190)
-
-# Jarak logo ke judul
-st.markdown("<div style='height:20px'></div>", unsafe_allow_html=True)
+with tengah:
+    st.image("logo-bank-bpd-bali.png", width=220)
 
 st.markdown("""
 <h1 style="
 text-align:center;
 color:white;
-font-size:58px;
+font-size:56px;
 font-weight:bold;
+margin-top:10px;
 margin-bottom:5px;">
 Analisis Sentimen
 </h1>
@@ -102,7 +118,7 @@ st.markdown("""
 text-align:center;
 color:white;
 font-size:22px;
-margin-bottom:40px;">
+margin-bottom:45px;">
 Ulasan Aplikasi BPD Bali Mobile
 </p>
 """, unsafe_allow_html=True)
@@ -113,9 +129,9 @@ Ulasan Aplikasi BPD Bali Mobile
 
 st.markdown("""
 <p style="
-color:white;
-font-size:24px;
+font-size:22px;
 font-weight:bold;
+color:white;
 margin-bottom:10px;">
 Masukkan Ulasan
 </p>
@@ -123,7 +139,7 @@ Masukkan Ulasan
 
 ulasan = st.text_area(
     "",
-    height=150,
+    height=170,
     placeholder="Contoh: Aplikasi sangat membantu dan mudah digunakan."
 )
 
@@ -134,6 +150,7 @@ ulasan = st.text_area(
 if st.button("🔍 Analisis Sentimen", use_container_width=True):
 
     if ulasan.strip() == "":
+
         st.warning("Masukkan ulasan terlebih dahulu.")
 
     else:
@@ -141,16 +158,21 @@ if st.button("🔍 Analisis Sentimen", use_container_width=True):
         hasil = preprocessing(ulasan)
 
         vector = vectorizer.transform([hasil])
+
         vector = chi_selector.transform(vector)
 
         prediksi = model.predict(vector)[0]
 
-        st.divider()
+        st.markdown("<br>", unsafe_allow_html=True)
 
         if prediksi == 1:
+
             st.success("😊 Sentimen Positif")
+
         else:
+
             st.error("😞 Sentimen Negatif")
 
-        with st.expander("Hasil Preprocessing"):
+        with st.expander("Lihat Hasil Preprocessing"):
+
             st.write(hasil)
