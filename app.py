@@ -85,18 +85,18 @@ except FileNotFoundError:
     st.error("Model (.pkl) tidak ditemukan, pastikan file berada di folder yang sama.")
 
 # ======================================
-# HEADER & LOGO (JARAK AMAN ATAS)
+# HEADER & LOGO
 # ======================================
 
-# Container kosong untuk menurunkan logo agar tidak kepotong layar atas browser
+# Container kosong menjaga jarak atas browser agar logo tidak kepotong
 st.container(height=45, border=False)
 
-# Mengunci posisi logo di tengah dengan ukuran mini/pas
+# Mengunci posisi logo di tengah
 kiri, tengah, kanan = st.columns([1.6, 1, 1.6]) 
 with tengah:
     st.image("logo-bank-bpd-bali.png", use_container_width=True)
 
-# Teks Judul Utama (Menggunakan margin-top minus agar naik memeluk bagian bawah logo)
+# Teks Judul Utama (Menempel rapat di bawah logo)
 st.markdown("""
 <h1 style="
     text-align: center;
@@ -111,20 +111,20 @@ st.markdown("""
 </h1>
 """, unsafe_allow_html=True)
 
-# Teks Sub-judul (Dibuat menempel langsung di bawah h1)
+# Teks Sub-judul (Diberi margin-top minus agar menempel sangat dekat dengan judul atasnya)
 st.markdown("""
 <p style="
     text-align: center;
     color: rgba(255, 255, 255, 0.9);
     font-size: 18px;
-    margin-top: 2px;
+    margin-top: -3px; 
     margin-bottom: 20px;">
     Ulasan Aplikasi BPD Bali Mobile
 </p>
 """, unsafe_allow_html=True)
 
 # ======================================
-# INPUT USER (SANGAT DEKAT DENGAN SUBJUDUL)
+# INPUT USER
 # ======================================
 st.markdown("""
 <p style="
@@ -144,7 +144,6 @@ ulasan = st.text_area(
     label_visibility="collapsed"
 )
 
-# Jarak tipis ke tombol
 st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)
 
 # ======================================
