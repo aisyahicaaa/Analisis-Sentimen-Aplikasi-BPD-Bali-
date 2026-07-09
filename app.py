@@ -24,7 +24,7 @@ st.markdown("""
 /* Mengatur container utama agar pas di tengah layar */
 .block-container {
     max-width: 720px;
-    padding-top: 40px;
+    padding-top: 30px; /* Dikurangi agar tidak terlalu turun */
     padding-bottom: 40px;
 }
 
@@ -85,36 +85,35 @@ except FileNotFoundError:
     st.error("Model (.pkl) tidak ditemukan, pastikan file berada di folder yang sama.")
 
 # ======================================
-# HEADER & LOGO (CENTERED)
+# HEADER & LOGO (RAPAT & SIMETRIS)
 # ======================================
-st.markdown("<br>", unsafe_allow_html=True)
 
-# Membuat 3 kolom dengan proporsi seimbang untuk mengunci logo di tengah
-kiri, tengah, kanan = st.columns([1, 2, 1])
+# Membuat 3 kolom untuk mengunci logo di tengah
+kiri, tengah, kanan = st.columns([1, 1.8, 1])
 with tengah:
-    # Menggunakan use_container_width agar ukuran logo proporsional di tengah
     st.image("logo-bank-bpd-bali.png", use_container_width=True)
 
-# Teks Judul Utama
+# Teks Judul Utama (Jarak margin-top dikecilkan menjadi 5px)
 st.markdown("""
 <h1 style="
     text-align: center;
     color: white;
     font-size: 56px;
     font-weight: bold;
-    margin-top: 20px;
-    margin-bottom: 5px;">
+    margin-top: 5px; 
+    margin-bottom: 0px;">
     Analisis Sentimen
 </h1>
 """, unsafe_allow_html=True)
 
-# Teks Sub-judul
+# Teks Sub-judul (Jarak margin-top dibuat 0 dan margin-bottom dikurangi jadi 25px)
 st.markdown("""
 <p style="
     text-align: center;
     color: white;
     font-size: 22px;
-    margin-bottom: 45px;">
+    margin-top: 0px;
+    margin-bottom: 25px;">
     Ulasan Aplikasi BPD Bali Mobile
 </p>
 """, unsafe_allow_html=True)
@@ -148,7 +147,6 @@ if st.button("🔍 Analisis Sentimen"):
     if ulasan.strip() == "":
         st.warning("Masukkan ulasan terlebih dahulu.")
     else:
-        # Panggil fungsi preprocessing & model
         hasil = preprocessing(ulasan)
         vector = vectorizer.transform([hasil])
         vector = chi_selector.transform(vector)
@@ -156,12 +154,10 @@ if st.button("🔍 Analisis Sentimen"):
         
         st.markdown("<br>", unsafe_allow_html=True)
         
-        # Tampilan hasil di atas background hijau (Menggunakan komponen alert bawaan)
         if prediksi == 1:
             st.success("😊 Sentimen Terdeteksi: POSITIF")
         else:
             st.error("😞 Sentimen Terdeteksi: NEGATIF")
             
-        # Expander untuk melihat hasil teks bersih
         with st.expander("Lihat Hasil Preprocessing"):
             st.write(hasil)
