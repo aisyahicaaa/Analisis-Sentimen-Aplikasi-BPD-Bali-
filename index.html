@@ -3,49 +3,38 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <title>Analisis Sentimen BPD Bali Mobile</title>
-
-    <link
-      rel="stylesheet"
-      href="{{ url_for('static', filename='style.css') }}"
-    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
   </head>
 
   <body>
     <div class="container">
-      <div class="card">
-        <div class="logo">
-          <img
-            src="{{ url_for('static', filename='logo-bank-bpd-bali.png') }}"
-            alt="Logo BPD Bali"
-          />
-        </div>
-
-        <h1>Analisis Sentimen</h1>
-
-        <h3>Ulasan Aplikasi BPD Bali Mobile</h3>
-
-        <form method="POST">
-          <textarea
-            name="ulasan"
-            placeholder="Masukkan ulasan aplikasi BPD Bali Mobile..."
-            required
-          >
-{{teks}}</textarea
-          >
-
-          <button type="submit">Analisis Sentimen</button>
-        </form>
-
-        {% if hasil %}
-
-        <div class="hasil {{warna}}">
-          <h2>{{hasil}}</h2>
-        </div>
-
-        {% endif %}
+      
+      <div class="logo">
+        <img src="{{ url_for('static', filename='logo-bank-bpd-bali.png') }}" alt="Logo BPD Bali" />
       </div>
+
+      <h1>Analisis Sentimen</h1>
+      <h3>Ulasan Aplikasi BPD Bali Mobile</h3>
+
+      <form method="POST" action="">
+        <label for="ulasan">Masukkan Ulasan</label>
+        
+        <textarea 
+          id="ulasan"
+          name="ulasan" 
+          placeholder="Contoh: Aplikasi sangat membantu dan mudah digunakan." 
+          required>{{ teks if teks else '' }}</textarea>
+        
+        <button type="submit">🔍 Analisis Sentimen</button>
+      </form>
+
+      {% if hasil %}
+      <div class="hasil {{ warna }}">
+        <h2>{{ hasil }}</h2>
+      </div>
+      {% endif %}
+
     </div>
   </body>
 </html>
