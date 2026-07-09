@@ -1,12 +1,9 @@
 streamlit
 pandas
 numpy
-matplotlib
-seaborn
 scikit-learn
-imbalanced-learn
 nltk
 Sastrawi
-wordcloud
 joblib
-google-play-scraper
+matplotlib
+seaborn
